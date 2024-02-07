@@ -1,32 +1,54 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
 export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-	//
-	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
-	// MY_QUEUE: Queue;
+	IG_TOKENS: any;
 }
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+	async fetch(request: any, env: Env, ctx: any) {
+		const { searchParams } = new URL(request.url);
+		const profileName = searchParams.get('profile');
+
+		const key = await env.IG_TOKENS.get(profileName);
+
+		try {
+			const response = await fetch(
+				`https://graph.instagram.com/me/media?fields=id,caption,media_url,timestamp,media_type,permalink&access_token=${await env.IG_TOKENS.get(
+					profileName
+				)}`
+			);
+			return response;
+		} catch (error) {
+			return new Response(JSON.stringify({ error: error }), {
+				status: 500,
+				headers: { 'Content-Type': 'application/json' },
+			});
+		}
+	},
+	async scheduled(event: any, env: any, ctx: any) {
+		console.log('Cron started');
+		const accounts = await env.IG_TOKENS.list();
+
+		loop: for (const account of accounts.keys) {
+			const token = await env.IG_TOKENS.get(account.name);
+
+			try {
+				const response = await fetch(`https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${token}`);
+				if (response.ok) {
+					const data: any = await response.json();
+					const newToken = data.access_token;
+					console.log('NEW TOKEN:' + newToken);
+					console.log('OLD TOKEN:' + token);
+					if (token !== newToken) {
+						await env.IG_TOKENS.put(account.name, newToken);
+						console.log('Successfully updated token for ' + account.name);
+						continue loop;
+					}
+					console.log('Failed to update token for ' + account.name + ': too soon (token is still functional)');
+					continue loop;
+				}
+				console.error('A ' + response.status + ' error occurred, ' + (await response.text()));
+			} catch (error) {
+				console.error('An error occurred when fetching new token for ' + account.name + ': ' + error);
+			}
+		}
 	},
 };
