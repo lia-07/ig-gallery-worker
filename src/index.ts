@@ -6,14 +6,13 @@ export default {
 	async fetch(request: any, env: Env, ctx: any) {
 		const { searchParams } = new URL(request.url);
 		const profileName = searchParams.get('profile');
+		const fields = searchParams.get('fields');
 
 		const key = await env.IG_TOKENS.get(profileName);
 
 		try {
 			const response = await fetch(
-				`https://graph.instagram.com/me/media?fields=id,caption,media_url,timestamp,media_type,permalink&access_token=${await env.IG_TOKENS.get(
-					profileName
-				)}`
+				`https://graph.instagram.com/me/media?fields=${fields}&access_token=${await env.IG_TOKENS.get(profileName)}`
 			);
 			return response;
 		} catch (error) {
