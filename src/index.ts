@@ -3,7 +3,7 @@ export interface Env {
 }
 
 export default {
-	async fetch(request: any, env: Env, ctx: any) {
+	async fetch(request: { url: string | URL }, env: Env) {
 		const { searchParams } = new URL(request.url);
 		const profileName = searchParams.get('profile');
 		const fields = searchParams.get('fields');
