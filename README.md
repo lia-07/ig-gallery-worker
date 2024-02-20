@@ -8,4 +8,6 @@ Workers](https://workers.cloudflare.com/) and [Cloudflare Workers
 KV](https://developers.cloudflare.com/kv/) because they are fast, free\* and
 flexible.
 
+Documentation coming soon.
+
 \*As long as it gets less than 100,000 requests per day.
