@@ -20,7 +20,7 @@ export default {
 			});
 		}
 	},
-	async scheduled(event: any, env: any, ctx: any) {
+	async scheduled(env: Env) {
 		console.log('Cron started');
 		const accounts = await env.IG_TOKENS.list();
 
