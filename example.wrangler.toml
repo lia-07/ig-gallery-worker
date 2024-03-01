@@ -1,0 +1,10 @@
+name = "ig-gallery-worker"
+main = "src/index.ts"
+compatibility_date = "2024-02-06"
+
+kv_namespaces = [
+    { binding = "IG_TOKENS", id = "********************************" }
+]
+
+[triggers]
+crons = ["0 0 * * thu"]
