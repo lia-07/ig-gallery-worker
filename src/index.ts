@@ -32,8 +32,6 @@ export default {
 				if (response.ok) {
 					const data: any = await response.json();
 					const newToken = data.access_token;
-					console.log('NEW TOKEN:' + newToken);
-					console.log('OLD TOKEN:' + token);
 					if (token !== newToken) {
 						await env.IG_TOKENS.put(account.name, newToken);
 						console.log('Successfully updated token for ' + account.name);
