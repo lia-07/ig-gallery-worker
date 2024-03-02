@@ -1,11 +1,10 @@
 # Instagram Gallery Worker
-
+---
 This is a tool which acts as a pass through layer for the Instagram Display API. Responses are meant to exactly match those provided by the official API. The only difference is this tool automatically manages and updates access tokens, requiring no human intervention. This makes it perfect for Jamstack-type sites.
 
 It is build to run on [Cloudflare Workers](https://workers.cloudflare.com/) and [Cloudflare Workers KV](https://developers.cloudflare.com/kv/) because they are fast, free (up to 100,000 requests per day) and flexible.
 
 ## Set up guide
-
 1. Install the [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/) and authorise it to access your Cloudflare account.
 2. Clone this repo.
 3. Create a `wrangler.toml` file in the root of this project, and copy and paste. the contents of `example.wrangler.toml` into it
@@ -16,11 +15,9 @@ It is build to run on [Cloudflare Workers](https://workers.cloudflare.com/) and 
 8. Now, simply run `wrangler deploy`.
 
 ### Multiple users
-
 It is possible to access multiple users' data from one Worker. Simply get the access token and repeat step 7 for each additional account.
 
 ## Usage
-
 You can find the URL for your worker either through the output of the `wrangler deploy` command, or through the online Cloudflare dashboard. For the sake of this guide, we will refer to it as `https://gallery.workers.dev`.
 
 To access your Instagram data, you just need to provide your desired fields and the username of the profile you would like to request (given that you have set it up with step 7 of the Setup guide) as URL parameters. You can find out which fields are available [here](https://developers.facebook.com/docs/instagram-basic-display-api/reference/media#fields). There is currently no authentication, but that shouldn't be necessary since the data is public anyway.
