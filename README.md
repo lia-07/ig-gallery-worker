@@ -2,9 +2,7 @@
 
 This is a tool which acts as a pass through layer for the Instagram Display API. Responses are meant to exactly match those provided by the official API. The only difference is this tool automatically manages and updates access tokens, requiring no human intervention. This makes it perfect for Jamstack-type sites.
 
-It is build to run on [Cloudflare Workers](https://workers.cloudflare.com/) and [Cloudflare Workers KV](https://developers.cloudflare.com/kv/) because they are fast, free\* and flexible.
-
-\*As long as it gets less than 100,000 requests per day.
+It is build to run on [Cloudflare Workers](https://workers.cloudflare.com/) and [Cloudflare Workers KV](https://developers.cloudflare.com/kv/) because they are fast, free (up to 100,000 requests per day) and flexible.
 
 ## Set up guide
 
@@ -17,9 +15,9 @@ It is build to run on [Cloudflare Workers](https://workers.cloudflare.com/) and 
 7. Run the command `wrangler kv:key put [YOUR IG USERNAME HERE] [YOUR IG ACCESS TOKEN HERE] --binding=IG_TOKENS`.
 8. Now, simply run `wrangler deploy`.
 
-### Multiple accounts
+### Multiple users
 
-It is possible to access multiple accounts' data from one Worker. Simply get the access token and repeat step 7 for each additional account.
+It is possible to access multiple users' data from one Worker. Simply get the access token and repeat step 7 for each additional account.
 
 ## Usage
 
@@ -27,4 +25,6 @@ You can find the URL for your worker either through the output of the `wrangler 
 
 To access your Instagram data, you just need to provide your desired fields and the username of the profile you would like to request (given that you have set it up with step 7 of the Setup guide) as URL parameters. You can find out which fields are available [here](https://developers.facebook.com/docs/instagram-basic-display-api/reference/media#fields). There is currently no authentication, but that shouldn't be necessary since the data is public anyway.
 
-For example, a request URL could look like `https://gallery.workers.dev/?fields=caption,thumbnail_url,media_url,media_type,timestamp,permalink&profile=instagramprofile`. The responses (successful and unsuccessful) are sent directly back from the Instagram API, and so information about them can be found on the [Instagram Basic Display API reference](https://developers.facebook.com/docs/instagram-basic-display-api/reference).
+For example, a request URL could look like `https://gallery.workers.dev/?fields=caption,thumbnail_url,media_url,media_type,timestamp,permalink&profile=instagramprofile`.
+
+The responses (successful and unsuccessful) are sent directly back from the Instagram API, and so information about them can be found on the [Instagram Basic Display API reference](https://developers.facebook.com/docs/instagram-basic-display-api/reference).
