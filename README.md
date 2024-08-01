@@ -9,7 +9,7 @@ It is built to run on [Cloudflare Workers](https://workers.cloudflare.com/) usin
 1. Install the [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/) and authorise it to access your Cloudflare account.
 2. Clone this repo and run `pnpm install`.
 3. Create a `wrangler.toml` file in the root of this project, and copy the contents of `example.wrangler.toml` into it.
-4. Run `wrangler kv:namespace create IG_TOKEN` in the root of this project.
+4. Run `wrangler kv:namespace create IG_TOKEN`.
 5. Copy the output and paste it in the `kv_namespaces` array in `wrangler.toml`.
 6. Obtain an Instagram API access token for your account by following steps 1–4 from [this tutorial](https://docs.oceanwp.org/article/487-how-to-get-instagram-access-token).
 7. Run the command `wrangler kv:key put [YOUR IG USERNAME HERE] [YOUR IG ACCESS TOKEN HERE] --binding=IG_TOKENS` (using your username and access token where it says). If you intend to run the script locally, run the command again with the `--local` argument.
