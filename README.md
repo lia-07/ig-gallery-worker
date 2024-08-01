@@ -27,7 +27,7 @@ To access your Instagram data, you just need to provide your desired fields and 
 
 For example, a request URL could look like `https://gallery.workers.dev/?fields=caption,thumbnail_url,media_url,media_type,timestamp,permalink&profile=instagramprofile`.
 
-The responses (successful and unsuccessful) are sent directly back from the Instagram API, and so information about them can be found on the [Instagram Basic Display API reference](https://developers.facebook.com/docs/instagram-basic-display-api/reference).
+The responses (successful and unsuccessful) are sent directly back from the Instagram API, and so information about them can be found on the [Instagram Basic Display API reference](https://developers.facebook.com/docs/instagram-basic-display-api/reference/media).
 
 ### Automatic token refreshing
 
